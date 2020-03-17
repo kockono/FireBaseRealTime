@@ -6,9 +6,8 @@ class App extends Component{
     render(){
         return(
             <div>
-                <Esp32>
-                    <h1>Calidad de gas</h1>
-                </Esp32>
+            <h1>Calidad de gas</h1>
+                <Esp32/>
             </div>
         )
     }
