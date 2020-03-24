@@ -9,9 +9,7 @@ class Esp32 extends Component {
         this.state = {
             message: '', // Aqui almacenaremos el mensaje del input
             messages: [
-                // {id:0, text: 'text1'},
-                // {id:1, text: 'text2'},
-                // {id:2, text: 'text3'},
+
             ]
         }
     }
@@ -22,7 +20,7 @@ class Esp32 extends Component {
     }
 
     componentDidMount() {
-        window.firebase.database().ref('messages/').on('value', snap => { // Guardar datos en messages5
+        window.firebase.database().ref('dispositivos/prototipo01/realtime/').on('value', snap => { // Guardar datos en messages5
             const currentmessages = snap.val();
             if(currentmessages != null) {
                 this.setState({
@@ -35,24 +33,22 @@ class Esp32 extends Component {
 
     hanldeSubmit(e) { // Recibe el evento de la informacion
         e.preventDefault();
-        let list = this.state.messages;
         const newMessage = {
-            id: this.state.messages.length,
-            text: this.state.message
+            id: 0,
+            ppm: this.state.message,
+            apagado: this.state.message
         }
-        // list.push(newMessage);
-        // this.setState({messages: list})
-        window.firebase.database().ref(`messages/${newMessage.id}`) // Contendran una id
+        // parseInt(apagado);
+        window.firebase.database().ref(`dispositivos/prototipo01/realtime/${newMessage.id}`) // Contendran una id
         .set(newMessage);
         this.setState({message: ''}); // Limpiar valor
     }
-
     
     render() {
 
         const {messages} = this.state;
         const messagesList = messages.map(message => {
-            return<li key={message.id}>{message.text}</li>
+            return <div><li key={message.id}>   {message.ppm}</li>Apagado: {message.apagado}</div>
 
         })
 
@@ -63,7 +59,7 @@ class Esp32 extends Component {
                 </ol>
                     <form onSubmit={this.hanldeSubmit.bind(this)}>
                     <input 
-                    type="text"
+                    type="apagado"
                     value={this.state.message}
                     onChange={this.updateMessage.bind(this)}
                     />
