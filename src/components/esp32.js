@@ -34,12 +34,11 @@ class Esp32 extends Component {
     hanldeSubmit(e) { // Recibe el evento de la informacion
         e.preventDefault();
         const newMessage = {
-            id: 0,
             ppm: this.state.message,
             apagado: this.state.message
         }
         // parseInt(apagado);
-        window.firebase.database().ref(`dispositivos/prototipo01/realtime/${newMessage.id}`) // Contendran una id
+        window.firebase.database().ref(`dispositivos/prototipo01/realtime/0`) // Contendran una id
         .set(newMessage);
         this.setState({message: ''}); // Limpiar valor
     }
@@ -59,7 +58,7 @@ class Esp32 extends Component {
                 </ol>
                     <form onSubmit={this.hanldeSubmit.bind(this)}>
                     <input 
-                    type="apagado"
+                    type="number"
                     value={this.state.message}
                     onChange={this.updateMessage.bind(this)}
                     />
