@@ -10,7 +10,6 @@ class Esp32 extends Component {
             message: '', // Aqui almacenaremos el mensaje del input
             messages: [
 
-
             ]
         }
     }
@@ -35,20 +34,21 @@ class Esp32 extends Component {
     hanldeSubmit(e) { // Recibe el evento de la informacion
         e.preventDefault();
         const newMessage = {
-            id: this.state.messages.length,
-            ppm: this.state.message
+            id: 0,
+            ppm: this.state.message,
+            apagado: this.state.message
         }
+        // parseInt(apagado);
         window.firebase.database().ref(`dispositivos/prototipo01/realtime/${newMessage.id}`) // Contendran una id
         .set(newMessage);
         this.setState({message: ''}); // Limpiar valor
     }
-
     
     render() {
 
         const {messages} = this.state;
         const messagesList = messages.map(message => {
-            return<li key={message.id}>{message.ppm}</li>
+            return <div><li key={message.id}>   {message.ppm}</li>Apagado: {message.apagado}</div>
 
         })
 
@@ -59,7 +59,7 @@ class Esp32 extends Component {
                 </ol>
                     <form onSubmit={this.hanldeSubmit.bind(this)}>
                     <input 
-                    type="ppm"
+                    type="apagado"
                     value={this.state.message}
                     onChange={this.updateMessage.bind(this)}
                     />
