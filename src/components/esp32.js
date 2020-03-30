@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import App from "../App";
-// import firebase from 'firebase'
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Card, Button, Form } from 'react-bootstrap';
 class Esp32 extends Component {
     
     constructor() {
         super();
         this.state = {
-            message: '', // Aqui almacenaremos el mensaje del input
+            message: 1, // Aqui almacenaremos el mensaje del input
             messages: [
 
             ]
         }
+
     }
 
     updateMessage(e) {
@@ -34,20 +35,22 @@ class Esp32 extends Component {
     hanldeSubmit(e) { // Recibe el evento de la informacion
         e.preventDefault();
         const newMessage = {
-            ppm: this.state.message,
+            //ppm: this.state.message,
             apagado: this.state.message
         }
-        // parseInt(apagado);
-        window.firebase.database().ref(`dispositivos/prototipo01/realtime/0`) // Contendran una id
-        .set(newMessage);
+        let num=parseInt(newMessage.apagado);
+        window.firebase.database().ref(`dispositivos/prototipo01/realtime/0/apagado`) // Contendran una id
+        .set(num);
         this.setState({message: ''}); // Limpiar valor
     }
-    
+    handleChange(checked){
+        this.setState({checked});
+    }
     render() {
 
         const {messages} = this.state;
         const messagesList = messages.map(message => {
-            return <div><li key={message.id}>   {message.ppm}</li>Apagado: {message.apagado}</div>
+        return <div><li key={message.id}>   {message.ppm}</li>Apagado: {message.apagado}</div>
 
         })
 
@@ -56,19 +59,20 @@ class Esp32 extends Component {
                 <ol>
                     {messagesList}
                 </ol>
-                    <form onSubmit={this.hanldeSubmit.bind(this)}>
-                    <input 
-                    type="number"
-                    value={this.state.message}
-                    onChange={this.updateMessage.bind(this)}
-                    />
-                    <button>
-                    Send
-                    </button>
-                    </form>
+                <Form onChange={this.hanldeSubmit.bind(this)}>
+                <Form.Check 
+                  type="switch"
+                  id="custom-switch"
+                  label="On/Off"
+                  onChange={this.updateMessage.bind(this)}
+                  checked ={this.state.checked}
+                />
+                </Form>
+                <p>this switch {this.state.checked ? 0 : 1}</p>
             </div>
         )
     }
 }
 
 export default Esp32;
+
